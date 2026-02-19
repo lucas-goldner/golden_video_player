@@ -20,6 +20,7 @@ class VideoController implements NativeVideoPlayerFlutterApi {
   Duration _playbackPosition = Duration.zero;
   double _playbackSpeed = 1;
   double _volume = 1;
+  bool _isPictureInPictureActive = false;
 
   /// A broadcast stream of playback events that can be listened to.
   ///
@@ -67,6 +68,9 @@ class VideoController implements NativeVideoPlayerFlutterApi {
   ///
   /// Ranges from 0.0 (muted) to 1.0 (full volume).
   double get volume => _volume;
+
+  /// Whether Picture in Picture mode is currently active.
+  bool get isPictureInPictureActive => _isPictureInPictureActive;
 
   /// NOTE: For internal use only.
   /// See [NativeVideoPlayerView.onViewReady] instead.
@@ -116,6 +120,8 @@ class VideoController implements NativeVideoPlayerFlutterApi {
         );
       case PlaybackReadyEvent():
         _videoInfo = await _hostApi.getVideoInfo();
+      case PictureInPictureStatusChangedEvent(:final isActive):
+        _isPictureInPictureActive = isActive;
       case PlaybackEndedEvent():
       case PlaybackErrorEvent():
     }
@@ -222,6 +228,18 @@ class VideoController implements NativeVideoPlayerFlutterApi {
   Future<void> setVolume(double volume) async {
     await _hostApi.setVolume(volume);
     onPlaybackEvent(VolumeChangedEvent(volume: volume));
+  }
+
+  /// Enters Picture in Picture mode.
+  /// Only available on iOS 9.0 and later.
+  Future<void> enterPictureInPicture() async {
+    await _hostApi.enterPictureInPicture();
+  }
+
+  /// Exits Picture in Picture mode.
+  /// Only available on iOS 9.0 and later.
+  Future<void> exitPictureInPicture() async {
+    await _hostApi.exitPictureInPicture();
   }
 }
 

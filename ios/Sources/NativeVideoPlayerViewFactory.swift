@@ -70,9 +70,14 @@ class NativeVideoPlayerView: UIView, FlutterPlatformView {
 
     private func setupView(viewId: Int64) {
         playerLayer.videoGravity = .resize
-        
+
         backgroundColor = UIColor.clear
         layer.addSublayer(playerLayer)
+
+        // Setup Picture in Picture
+        if #available(iOS 9.0, *) {
+            controller.setPlayerLayer(playerLayer)
+        }
     }
 
     override func layoutSubviews() {

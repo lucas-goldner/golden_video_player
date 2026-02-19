@@ -73,6 +73,12 @@ abstract class NativeVideoPlayerHostApi {
   void setVolume(double volume);
 
   void setPlaybackSpeed(double speed);
+
+  void enterPictureInPicture();
+
+  void exitPictureInPicture();
+
+  bool isPictureInPictureActive();
 }
 
 sealed class PlaybackEvent {
@@ -117,6 +123,12 @@ class PlaybackErrorEvent extends PlaybackEvent {
   final String errorMessage;
 
   const PlaybackErrorEvent(this.errorMessage);
+}
+
+class PictureInPictureStatusChangedEvent extends PlaybackEvent {
+  final bool isActive;
+
+  const PictureInPictureStatusChangedEvent(this.isActive);
 }
 
 @FlutterApi()

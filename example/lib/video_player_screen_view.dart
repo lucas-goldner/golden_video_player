@@ -84,6 +84,8 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
           _onPlaybackEnded();
         case PlaybackErrorEvent():
           _onPlaybackError(event);
+        case PictureInPictureStatusChangedEvent():
+          break;
       }
     });
 

@@ -249,6 +249,24 @@ data class PlaybackErrorEvent (
     )
   }
 }
+
+/** Generated class from Pigeon that represents data sent in messages. */
+data class PictureInPictureStatusChangedEvent (
+  val isActive: Boolean
+) : PlaybackEvent()
+ {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): PictureInPictureStatusChangedEvent {
+      val isActive = pigeonVar_list[0] as Boolean
+      return PictureInPictureStatusChangedEvent(isActive)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf(
+      isActive,
+    )
+  }
+}
 private open class ApiPigeonCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
     return when (type) {
@@ -307,6 +325,11 @@ private open class ApiPigeonCodec : StandardMessageCodec() {
           PlaybackErrorEvent.fromList(it)
         }
       }
+      140.toByte() -> {
+        return (readValue(buffer) as? List<Any?>)?.let {
+          PictureInPictureStatusChangedEvent.fromList(it)
+        }
+      }
       else -> super.readValueOfType(type, buffer)
     }
   }
@@ -356,6 +379,10 @@ private open class ApiPigeonCodec : StandardMessageCodec() {
         stream.write(139)
         writeValue(stream, value.toList())
       }
+      is PictureInPictureStatusChangedEvent -> {
+        stream.write(140)
+        writeValue(stream, value.toList())
+      }
       else -> super.writeValue(stream, value)
     }
   }
@@ -373,6 +400,9 @@ interface NativeVideoPlayerHostApi {
   fun getPlaybackPosition(): Long
   fun setVolume(volume: Double)
   fun setPlaybackSpeed(speed: Double)
+  fun enterPictureInPicture()
+  fun exitPictureInPicture()
+  fun isPictureInPictureActive(): Boolean
 
   companion object {
     /** The codec used by NativeVideoPlayerHostApi. */
@@ -384,7 +414,7 @@ interface NativeVideoPlayerHostApi {
     fun setUp(binaryMessenger: BinaryMessenger, api: NativeVideoPlayerHostApi?, messageChannelSuffix: String = "") {
       val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.loadVideo$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.loadVideo$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -402,7 +432,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.getVideoInfo$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.getVideoInfo$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
@@ -417,7 +447,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.play$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.play$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -435,7 +465,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.pause$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.pause$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
@@ -451,7 +481,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.stop$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.stop$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
@@ -467,7 +497,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.isPlaying$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.isPlaying$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
@@ -482,7 +512,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.seekTo$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.seekTo$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -500,7 +530,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.getPlaybackPosition$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.getPlaybackPosition$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
@@ -515,7 +545,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.setVolume$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.setVolume$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -533,7 +563,7 @@ interface NativeVideoPlayerHostApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.setPlaybackSpeed$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.setPlaybackSpeed$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -541,6 +571,53 @@ interface NativeVideoPlayerHostApi {
             val wrapped: List<Any?> = try {
               api.setPlaybackSpeed(speedArg)
               listOf(null)
+            } catch (exception: Throwable) {
+              wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.enterPictureInPicture$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              api.enterPictureInPicture()
+              listOf(null)
+            } catch (exception: Throwable) {
+              wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.exitPictureInPicture$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              api.exitPictureInPicture()
+              listOf(null)
+            } catch (exception: Throwable) {
+              wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.isPictureInPictureActive$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              listOf(api.isPictureInPictureActive())
             } catch (exception: Throwable) {
               wrapError(exception)
             }
@@ -564,7 +641,7 @@ class NativeVideoPlayerFlutterApi(private val binaryMessenger: BinaryMessenger, 
   fun onPlaybackEvent(eventArg: PlaybackEvent, callback: (Result<Unit>) -> Unit)
 {
     val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
-    val channelName = "dev.flutter.pigeon.native_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent$separatedMessageChannelSuffix"
+    val channelName = "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent$separatedMessageChannelSuffix"
     val channel = BasicMessageChannel<Any?>(binaryMessenger, channelName, codec)
     channel.send(listOf(eventArg)) {
       if (it is List<*>) {

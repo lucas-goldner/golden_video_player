@@ -1,10 +1,14 @@
 import Flutter
 import AVFoundation
+import AVKit
 
 class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     let player: AVPlayer
     private let flutterApi: NativeVideoPlayerFlutterApi
-    
+    private var pictureInPictureController: Any?
+    private var pictureInPictureDelegate: PictureInPictureDelegate?
+    private weak var playerLayer: AVPlayerLayer?
+
     init(messenger: FlutterBinaryMessenger, viewId: Int64) {
         self.player = AVPlayer(playerItem: nil)
         self.flutterApi = NativeVideoPlayerFlutterApi(
@@ -122,7 +126,53 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     func setVolume(volume: Double) throws {
         player.volume = Float(volume)
     }
-    
+
+    func setPlayerLayer(_ layer: AVPlayerLayer) {
+        self.playerLayer = layer
+        setupPictureInPicture()
+    }
+
+    func enterPictureInPicture() throws {
+        guard let controller = pictureInPictureController as? AVPictureInPictureController else {
+            flutterApi.onPlaybackEvent(
+                event: PlaybackErrorEvent(errorMessage: "Picture in Picture is not available")
+            ) { _ in }
+            return
+        }
+        if !controller.isPictureInPictureActive {
+            controller.startPictureInPicture()
+        }
+    }
+
+    func exitPictureInPicture() throws {
+        guard let controller = pictureInPictureController as? AVPictureInPictureController else {
+            return
+        }
+        if controller.isPictureInPictureActive {
+            controller.stopPictureInPicture()
+        }
+    }
+
+    func isPictureInPictureActive() throws -> Bool {
+        guard let controller = pictureInPictureController as? AVPictureInPictureController else {
+            return false
+        }
+        return controller.isPictureInPictureActive
+    }
+
+    private func setupPictureInPicture() {
+        guard let playerLayer = playerLayer else { return }
+
+        if AVPictureInPictureController.isPictureInPictureSupported(),
+           let pipController = AVPictureInPictureController(playerLayer: playerLayer) {
+            let delegate = PictureInPictureDelegate(flutterApi: flutterApi)
+            pipController.delegate = delegate
+            pictureInPictureController = pipController
+            // Keep a strong reference to the delegate
+            self.pictureInPictureDelegate = delegate
+        }
+    }
+
     override public func observeValue(
         forKeyPath keyPath: String?,
         of object: Any?,
@@ -150,9 +200,9 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
             }
         }
     }
-    
+
     // MARK: - Player Item Notifications
-    
+
     private let playerItemNotifications: [NSNotification.Name] = [
         // A notification the system posts when a player item plays to its end time.
         AVPlayerItem.didPlayToEndTimeNotification,
@@ -171,7 +221,7 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
         // A notification the system posts when a player item adds a new entry to its error log.
         // AVPlayerItem.newErrorLogEntryNotification
     ]
-    
+
     @objc
     private func onPlayerItemNotification(notification: NSNotification) {
         // print("AVPlayerItem notification: \(notification.name)")
@@ -215,5 +265,28 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
                 name: notification,
                 object: player.currentItem)
         }
+    }
+}
+
+// MARK: - Picture in Picture Delegate (iOS 9.0+)
+
+private class PictureInPictureDelegate: NSObject, AVPictureInPictureControllerDelegate {
+    private let flutterApi: NativeVideoPlayerFlutterApi
+
+    init(flutterApi: NativeVideoPlayerFlutterApi) {
+        self.flutterApi = flutterApi
+        super.init()
+    }
+
+    func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        flutterApi.onPlaybackEvent(
+            event: PictureInPictureStatusChangedEvent(isActive: true)
+        ) { _ in }
+    }
+
+    func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        flutterApi.onPlaybackEvent(
+            event: PictureInPictureStatusChangedEvent(isActive: false)
+        ) { _ in }
     }
 }
