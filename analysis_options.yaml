@@ -1,8 +1,12 @@
-include: package:very_good_analysis/analysis_options.yaml
+include: package:very_good_analysis/analysis_options.4.0.0.yaml
 
 analyzer:
   exclude:
     - lib/src/api.g.dart
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.config.dart"
+    - pigeon/**
 
 linter:
   rules:
@@ -10,3 +14,5 @@ linter:
     public_member_api_docs: false
     sort_constructors_first: false
     always_put_required_named_parameters_first: false
+    avoid_print: false
+    always_use_package_imports: false

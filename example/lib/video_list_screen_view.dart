@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:native_video_player/native_video_player.dart';
-import 'package:native_video_player_example/defines.dart';
+import 'package:golden_video_player/golden_video_player.dart';
+import 'package:golden_video_player_example/defines.dart';
 
 class VideoListScreenView extends StatelessWidget {
   const VideoListScreenView({
@@ -67,7 +67,7 @@ class _VideoListItemViewState extends State<VideoListItemView> {
         child: Stack(
           children: [
             NativeVideoPlayerView(
-              onViewReady: (controller) async {
+              onViewReady: (NativeVideoPlayerController controller) async {
                 _controller = controller;
                 await _controller?.setVolume(1);
                 await _controller?.loadVideo(widget.videoSource);

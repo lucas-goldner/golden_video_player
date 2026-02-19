@@ -1,4 +1,4 @@
-import 'package:native_video_player/native_video_player.dart';
+import 'package:golden_video_player/golden_video_player.dart';
 
 final videoSources = [
   VideoSource(path: 'assets/video/01.mp4', type: VideoSourceType.asset),

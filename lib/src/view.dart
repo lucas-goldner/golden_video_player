@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:native_video_player/src/controller.dart';
+import 'controller.dart';
 
 /// A [StatefulWidget] that is responsible for displaying a video.
 ///
@@ -12,9 +12,10 @@ import 'package:native_video_player/src/controller.dart';
 class NativeVideoPlayerView extends StatefulWidget {
   /// Callback that is triggered when the native video player view is ready.
   ///
-  /// This callback provides a [NativeVideoPlayerController] instance that can be used
-  /// to control the video playback (play, pause, seek, etc.). The controller is
-  /// created after the native platform view has been successfully initialized.
+  /// This callback provides a [NativeVideoPlayerController] instance that can
+  /// be used to control the video playback (play, pause, seek, etc.). The
+  /// controller is created after the native platform view has been successfully
+  /// initialized.
   ///
   /// Example usage:
   /// ```dart

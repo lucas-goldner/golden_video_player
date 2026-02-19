@@ -1,5 +1,5 @@
-name: native_video_player_example
-description: Demonstrates how to use the native_video_player plugin.
+name: golden_video_player_example
+description: Demonstrates how to use the golden_video_player plugin.
 publish_to: 'none'
 
 environment:
@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  native_video_player:
+  golden_video_player:
     path: ../
 
 dev_dependencies:

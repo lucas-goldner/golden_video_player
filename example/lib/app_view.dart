@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:native_video_player_example/video-list-screen-view.dart';
-import 'package:native_video_player_example/video-player-screen-view.dart';
+import 'package:golden_video_player_example/video_list_screen_view.dart';
+import 'package:golden_video_player_example/video_player_screen_view.dart';
 
 enum AppRoute {
   videoPlayer,

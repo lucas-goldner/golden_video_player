@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:native_video_player/native_video_player.dart';
-import 'package:native_video_player_example/defines.dart';
-import 'package:native_video_player_example/functions.dart';
+import 'package:golden_video_player/golden_video_player.dart';
+import 'package:golden_video_player_example/defines.dart';
+import 'package:golden_video_player_example/functions.dart';
 
 class VideoPlayerScreenView extends StatefulWidget {
   const VideoPlayerScreenView({super.key});
@@ -141,8 +141,10 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
   }
 
   void _onPlaybackError(PlaybackErrorEvent event) {
-    print('''
-Playback error: ${event.errorMessage} (video source: ${widget.videoSource.path})''');
+    debugPrint(
+      'Playback error: ${event.errorMessage} '
+      '(video source: ${widget.videoSource.path})',
+    );
   }
 
   @override
@@ -266,17 +268,15 @@ Speed: ${_controller?.playbackSpeed.toStringAsFixed(2)}'''),
 
   Widget _buildPlaybackStatusView() {
     const size = 16.0;
-    final color = Colors.black.withOpacity(0.3);
-    switch (_controller?.playbackStatus) {
-      case PlaybackStatus.playing:
-        return Icon(Icons.play_arrow, size: size, color: color);
-      case PlaybackStatus.paused:
-        return Icon(Icons.pause, size: size, color: color);
-      case PlaybackStatus.stopped:
-        return Icon(Icons.stop, size: size, color: color);
-      case null:
-        return const SizedBox.shrink();
-    }
+    final color = Colors.black.withValues(alpha: 0.3);
+    return switch (_controller?.playbackStatus) {
+      PlaybackStatus.playing =>
+        Icon(Icons.play_arrow, size: size, color: color),
+      PlaybackStatus.paused => Icon(Icons.pause, size: size, color: color),
+      PlaybackStatus.stopped =>
+        Icon(Icons.stop, size: size, color: color),
+      null => const SizedBox.shrink(),
+    };
   }
 }
 
@@ -305,7 +305,7 @@ class VideoCarouselView extends StatelessWidget {
             child: Stack(
               children: [
                 NativeVideoPlayerView(
-                  onViewReady: (controller) async {
+                  onViewReady: (NativeVideoPlayerController controller) async {
                     await controller.loadVideo(videoSource);
                   },
                 ),

@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import native_video_player
+import golden_video_player
 import path_provider_foundation
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {

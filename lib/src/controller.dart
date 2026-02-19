@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:native_video_player/src/api.g.dart';
-import 'package:native_video_player/src/utils/file.dart';
+import 'api.g.dart';
+import 'utils/file.dart';
 
 class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
   late final NativeVideoPlayerHostApi _hostApi;
@@ -166,7 +166,7 @@ class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
   Future<bool> isPlaying() async {
     try {
       return await _hostApi.isPlaying();
-    } catch (exception) {
+    } on Exception {
       return false;
     }
   }
