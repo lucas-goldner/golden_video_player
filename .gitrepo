@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/lucas-goldner/golden_video_player
+	branch = main
+	commit = 72696497020dac9bad6d8be212ed12bb3648dc46
+	parent = c6248934d31d3afedd69618b1c5bad058c655795
+	method = merge
+	cmdver = 0.4.9

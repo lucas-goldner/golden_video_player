@@ -1,0 +1,43 @@
+name: golden_video_player
+description: A Flutter widget to play videos on iOS and Android using a native implementation.
+version: 4.0.0
+repository: https://github.com/lucas-goldner/golden_video_player
+
+funding:
+  - https://github.com/sponsors/albemala
+  - https://www.buymeacoffee.com/albemala
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  path_provider: ^2.1.5
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  very_good_analysis: ^7.0.0
+
+  build_runner: ^2.4.13
+  pigeon: #^22.7.1
+    git:
+      url: https://github.com/feduke-nukem/packages.git
+      ref: f9a3a92e9853484bd91cf29b6b306607b0c4eb35
+      path: packages/pigeon
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: me.albemala.native_video_player
+        pluginClass: NativeVideoPlayerPlugin
+      ios:
+        pluginClass: NativeVideoPlayerPlugin
+      macos:
+        pluginClass: NativeVideoPlayerPlugin
