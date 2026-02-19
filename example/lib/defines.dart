@@ -7,12 +7,12 @@ final videoSources = [
   VideoSource(path: 'assets/video/04.mp4', type: VideoSourceType.asset),
   VideoSource(
     path:
-        'https://github.com/albemala/native_video_player/raw/refs/heads/main/example/assets/video/05.mp4',
+        'https://github.com/lucas-goldner/golden_video_player/raw/refs/heads/main/example/assets/video/05.mp4',
     type: VideoSourceType.network,
   ),
   VideoSource(
     path:
-        'https://github.com/albemala/native_video_player/raw/refs/heads/main/example/assets/video/06.mp4',
+        'https://github.com/lucas-goldner/golden_video_player/raw/refs/heads/main/example/assets/video/06.mp4',
     type: VideoSourceType.network,
   ),
   VideoSource(path: 'assets/video/07.webm', type: VideoSourceType.asset),

@@ -12,7 +12,7 @@ import 'controller.dart';
 class NativeVideoPlayerView extends StatefulWidget {
   /// Callback that is triggered when the native video player view is ready.
   ///
-  /// This callback provides a [NativeVideoPlayerController] instance that can
+  /// This callback provides a [VideoController] instance that can
   /// be used to control the video playback (play, pause, seek, etc.). The
   /// controller is created after the native platform view has been successfully
   /// initialized.
@@ -26,7 +26,7 @@ class NativeVideoPlayerView extends StatefulWidget {
   ///   },
   /// )
   /// ```
-  final void Function(NativeVideoPlayerController) onViewReady;
+  final void Function(VideoController) onViewReady;
 
   const NativeVideoPlayerView({
     super.key,
@@ -66,7 +66,7 @@ class _NativeVideoPlayerViewState extends State<NativeVideoPlayerView> {
   /// This method is invoked by the platform view
   /// when the native view is created.
   Future<void> onPlatformViewCreated(int id) async {
-    final controller = NativeVideoPlayerController(id);
+    final controller = VideoController(id);
     widget.onViewReady(controller);
   }
 }

@@ -4,8 +4,9 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'api.g.dart';
 import 'utils/file.dart';
+import 'view.dart';
 
-class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
+class VideoController implements NativeVideoPlayerFlutterApi {
   late final NativeVideoPlayerHostApi _hostApi;
 
   final _eventsController = StreamController<PlaybackEvent>.broadcast();
@@ -70,7 +71,7 @@ class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
   /// NOTE: For internal use only.
   /// See [NativeVideoPlayerView.onViewReady] instead.
   @protected
-  NativeVideoPlayerController(int viewId) {
+  VideoController(int viewId) {
     _hostApi = NativeVideoPlayerHostApi(
       messageChannelSuffix: viewId.toString(),
     );
@@ -224,13 +225,13 @@ class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
   }
 }
 
-extension SetPlaybackStatus on NativeVideoPlayerController {
+extension SetPlaybackStatus on VideoController {
   void _setPlaybackStatus(PlaybackStatus status) {
     onPlaybackEvent(PlaybackStatusChangedEvent(status: status));
   }
 }
 
-extension PlaybackPositionTimer on NativeVideoPlayerController {
+extension PlaybackPositionTimer on VideoController {
   void _startPlaybackPositionTimer() {
     _stopPlaybackPositionTimer();
     _playbackPositionTimer ??= Timer.periodic(

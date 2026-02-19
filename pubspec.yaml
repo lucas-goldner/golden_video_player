@@ -4,8 +4,8 @@ version: 4.0.0
 repository: https://github.com/lucas-goldner/golden_video_player
 
 funding:
-  - https://github.com/sponsors/albemala
-  - https://www.buymeacoffee.com/albemala
+  - https://github.com/sponsors/lucas-goldner
+  - https://www.buymeacoffee.com/lucas-goldner
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
@@ -35,7 +35,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: me.albemala.native_video_player
+        package: me.lucasgoldner.native_video_player
         pluginClass: NativeVideoPlayerPlugin
       ios:
         pluginClass: NativeVideoPlayerPlugin

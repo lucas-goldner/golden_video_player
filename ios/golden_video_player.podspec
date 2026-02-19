@@ -1,24 +1,24 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint native_video_player.podspec` to validate before publishing.
+# Run `pod lib lint golden_video_player.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'native_video_player'
+  s.name             = 'golden_video_player'
   s.version          = '4.0.0'
   s.summary          = 'A Flutter widget to play videos on iOS, macOS and Android using a native implementation.'
   s.description      = <<-DESC
 A Flutter widget to play videos on iOS, macOS and Android using a native implementation.
                        DESC
-  s.homepage         = 'https://pub.dev/packages/native_video_player'
+  s.homepage         = 'https://pub.dev/packages/golden_video_player'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Alberto Malagoli' => 'albemala@gmail.com' }
+  s.author           = { 'Lucas Goldner' => 'lucas-goldner@gmail.com' }
   s.source           = { :path => '.' }
 
   s.source_files     = 'Sources/*.swift'
   
-  s.dependency 'FlutterMacOS'
+  s.dependency 'Flutter'
 
-  s.platform = :osx, '10.11'
+  s.platform = :ios, '12.0'
   
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
 

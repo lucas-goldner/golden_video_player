@@ -5,7 +5,7 @@ import 'package:pigeon/pigeon.dart';
     dartOut: 'lib/src/api.g.dart',
     dartOptions: DartOptions(),
     kotlinOut:
-        'android/src/main/kotlin/me/albemala/native_video_player/Api.g.kt',
+        'android/src/main/kotlin/me/lucasgoldner/native_video_player/Api.g.kt',
     kotlinOptions: KotlinOptions(),
     swiftOut: 'apple/Sources/Api.g.swift',
     swiftOptions: SwiftOptions(),

@@ -48,7 +48,7 @@ class VideoListItemView extends StatefulWidget {
 }
 
 class _VideoListItemViewState extends State<VideoListItemView> {
-  NativeVideoPlayerController? _controller;
+  VideoController? _controller;
   bool _isPlaying = false;
 
   @override
@@ -67,7 +67,7 @@ class _VideoListItemViewState extends State<VideoListItemView> {
         child: Stack(
           children: [
             NativeVideoPlayerView(
-              onViewReady: (NativeVideoPlayerController controller) async {
+              onViewReady: (VideoController controller) async {
                 _controller = controller;
                 await _controller?.setVolume(1);
                 await _controller?.loadVideo(widget.videoSource);

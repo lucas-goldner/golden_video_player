@@ -59,13 +59,13 @@ class VideoPlayerView extends StatefulWidget {
 }
 
 class _VideoPlayerViewState extends State<VideoPlayerView> {
-  NativeVideoPlayerController? _controller;
+  VideoController? _controller;
   StreamSubscription<void>? _eventsSubscription;
 
   bool isAutoplayEnabled = false;
   bool isPlaybackLoopEnabled = false;
 
-  Future<void> _initController(NativeVideoPlayerController controller) async {
+  Future<void> _initController(VideoController controller) async {
     _controller = controller;
 
     _eventsSubscription = _controller?.events.listen((event) {
@@ -305,7 +305,7 @@ class VideoCarouselView extends StatelessWidget {
             child: Stack(
               children: [
                 NativeVideoPlayerView(
-                  onViewReady: (NativeVideoPlayerController controller) async {
+                  onViewReady: (VideoController controller) async {
                     await controller.loadVideo(videoSource);
                   },
                 ),

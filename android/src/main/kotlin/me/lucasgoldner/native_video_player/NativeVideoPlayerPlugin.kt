@@ -1,4 +1,4 @@
-package me.albemala.native_video_player
+package me.lucasgoldner.native_video_player
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 

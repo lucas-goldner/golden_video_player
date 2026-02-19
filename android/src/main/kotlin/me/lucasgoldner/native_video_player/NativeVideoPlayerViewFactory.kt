@@ -1,4 +1,4 @@
-package me.albemala.native_video_player
+package me.lucasgoldner.native_video_player
 
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger

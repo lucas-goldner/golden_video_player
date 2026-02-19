@@ -1,6 +1,6 @@
-# native_video_player
+# golden_video_player
 
-[![Pub](https://img.shields.io/pub/v/native_video_player)](https://pub.dev/packages/native_video_player)
+[![Pub](https://img.shields.io/pub/v/golden_video_player)](https://pub.dev/packages/golden_video_player)
 
 A Flutter widget to play videos on iOS, macOS and Android using a native implementation.
 
@@ -10,9 +10,9 @@ Perfect for building video-centric apps like TikTok, Instagram Reels, or YouTube
 |:------------|:--------|:-----|:------|
 | **Support** | 16+     | 9.0+ | 10.11+|
 
-<img src="https://raw.githubusercontent.com/albemala/native_video_player/main/screenshots/1.gif" width="320"/>
-<img src="https://raw.githubusercontent.com/albemala/native_video_player/main/screenshots/2.gif" width="320"/>
-<img src="https://raw.githubusercontent.com/albemala/native_video_player/main/screenshots/3.gif" width="320"/>
+<img src="https://raw.githubusercontent.com/lucas-goldner/native_video_player/main/screenshots/1.gif" width="320"/>
+<img src="https://raw.githubusercontent.com/lucas-goldner/native_video_player/main/screenshots/2.gif" width="320"/>
+<img src="https://raw.githubusercontent.com/lucas-goldner/native_video_player/main/screenshots/3.gif" width="320"/>
 
 ### Implementation
 
@@ -146,12 +146,12 @@ It's important to properly dispose of both the controller and any event subscrip
 
 ### Advanced usage
 
-See the [example app](https://github.com/albemala/native_video_player/tree/main/example) for a complete usage example.
+See the [example app](https://github.com/lucas-goldner/native_video_player/tree/main/example) for a complete usage example.
 
 ## Support this project
 
-- [GitHub Sponsor](https://github.com/sponsors/albemala)
-- [Buy Me A Coffee](https://www.buymeacoffee.com/albemala)
+- [GitHub Sponsor](https://github.com/sponsors/lucas-goldner)
+- [Buy Me A Coffee](https://www.buymeacoffee.com/lucas-goldner)
 
 Sponsors:
 
@@ -162,8 +162,8 @@ Thank you to all sponsors for supporting this project! ❤️
 
 ## Other projects
 
-[All my projects](https://projects.albemala.me/)
+[All my projects](https://projects.lucas-goldner.me/)
 
 ## Credits
 
-Created by [@albemala](https://github.com/albemala) ([Twitter](https://twitter.com/albemala))
+Created by [@lucas-goldner](https://github.com/lucas-goldner) ([Twitter](https://twitter.com/lucas-goldner))
