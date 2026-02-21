@@ -40,7 +40,7 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     
     func loadVideo(source: VideoSource) throws {
         let isUrl = source.type == .network
-        
+
         guard let uri = isUrl
             ? URL(string: source.path)
             : URL(fileURLWithPath: source.path)
@@ -48,10 +48,41 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
             return
         }
 
-        let videoAsset = isUrl 
-            ? AVURLAsset(url: uri, options: ["AVURLAssetHTTPHeaderFieldsKey": source.headers]) 
-            : AVAsset(url: uri)
-        
+        let videoAsset: AVAsset
+        if isUrl {
+            var options: [String: Any] = [:]
+            if let headers = source.headers {
+                options["AVURLAssetHTTPHeaderFieldsKey"] = headers
+            }
+            videoAsset = AVURLAsset(url: uri, options: options.isEmpty ? nil : options)
+        } else {
+            videoAsset = AVAsset(url: uri)
+        }
+
+        // Load asset properties asynchronously
+        let requiredKeys = ["tracks", "duration", "playable"]
+        videoAsset.loadValuesAsynchronously(forKeys: requiredKeys) { [weak self] in
+            DispatchQueue.main.async {
+                self?.handleAssetLoaded(videoAsset: videoAsset, requiredKeys: requiredKeys)
+            }
+        }
+    }
+
+    private func handleAssetLoaded(videoAsset: AVAsset, requiredKeys: [String]) {
+        // Check if asset was loaded successfully
+        for key in requiredKeys {
+            var error: NSError?
+            let status = videoAsset.statusOfValue(forKey: key, error: &error)
+
+            if status == .failed {
+                flutterApi.onPlaybackEvent(
+                    event: PlaybackErrorEvent(errorMessage: "Failed to load asset property: \(key)")
+                ) { _ in }
+                return
+            }
+        }
+
+        // Check if playable
         if !videoAsset.isPlayable {
             flutterApi.onPlaybackEvent(event: PlaybackErrorEvent(errorMessage: "Video is not playable")) { _ in }
             return
@@ -70,18 +101,39 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     }
 
     func getVideoInfo() throws -> VideoInfo {
-        guard 
-            let videoTrack = player.currentItem?.asset.tracks(withMediaType: .video).first,
-            let duration = player.currentItem?.asset.duration else {
+        guard let asset = player.currentItem?.asset else {
             return VideoInfo(height: 0, width: 0, durationInMilliseconds: 0)
         }
-        let durationInMilliseconds = duration.isValid 
-            ? duration.seconds * 1000 
+
+        // Check duration property status
+        var durationError: NSError?
+        let durationStatus = asset.statusOfValue(forKey: "duration", error: &durationError)
+        guard durationStatus == .loaded || durationStatus == .unknown else {
+            return VideoInfo(height: 0, width: 0, durationInMilliseconds: 0)
+        }
+
+        let duration = asset.duration
+        let durationInMilliseconds = duration.isValid
+            ? duration.seconds * 1000
             : 0
-        
+
+        // Check tracks property status
+        var tracksError: NSError?
+        let tracksStatus = asset.statusOfValue(forKey: "tracks", error: &tracksError)
+        guard tracksStatus == .loaded || tracksStatus == .unknown else {
+            return VideoInfo(height: 0, width: 0, durationInMilliseconds: Int64(durationInMilliseconds))
+        }
+
+        guard let videoTrack = asset.tracks(withMediaType: .video).first else {
+            return VideoInfo(height: 0, width: 0, durationInMilliseconds: Int64(durationInMilliseconds))
+        }
+
+        // Get naturalSize synchronously after ensuring tracks are loaded
+        let size = videoTrack.naturalSize
+
         return VideoInfo(
-            height: Int64(videoTrack.naturalSize.height),
-            width: Int64(videoTrack.naturalSize.width),
+            height: Int64(size.height),
+            width: Int64(size.width),
             durationInMilliseconds: Int64(durationInMilliseconds)
         )
     }
@@ -139,6 +191,14 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
             ) { _ in }
             return
         }
+
+        guard player.currentItem != nil else {
+            flutterApi.onPlaybackEvent(
+                event: PlaybackErrorEvent(errorMessage: "No video loaded")
+            ) { _ in }
+            return
+        }
+
         if !controller.isPictureInPictureActive {
             controller.startPictureInPicture()
         }
@@ -163,8 +223,13 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     private func setupPictureInPicture() {
         guard let playerLayer = playerLayer else { return }
 
-        if AVPictureInPictureController.isPictureInPictureSupported(),
-           let pipController = AVPictureInPictureController(playerLayer: playerLayer) {
+        // Only setup PIP if it's supported
+        guard AVPictureInPictureController.isPictureInPictureSupported() else {
+            return
+        }
+
+        // Create the PIP controller
+        if let pipController = AVPictureInPictureController(playerLayer: playerLayer) {
             let delegate = PictureInPictureDelegate(flutterApi: flutterApi)
             pipController.delegate = delegate
             pictureInPictureController = pipController
