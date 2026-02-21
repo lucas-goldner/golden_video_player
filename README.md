@@ -1,6 +1,6 @@
-# native_video_player
+# golden_native_player
 
-[![Pub](https://img.shields.io/pub/v/native_video_player)](https://pub.dev/packages/native_video_player)
+A fork of [native_video_player](https://github.com/albemala/native_video_player) with additional features and improvements.
 
 A Flutter widget to play videos on iOS, macOS and Android using a native implementation.
 
@@ -22,6 +22,12 @@ Perfect for building video-centric apps like TikTok, Instagram Reels, or YouTube
 - On Android, the video is displayed using a combination
   of [MediaPlayer](https://developer.android.com/guide/topics/media/mediaplayer)
   and [VideoView](https://developer.android.com/reference/android/widget/VideoView).
+
+## Added Features
+
+This fork includes the following enhancements over the original `native_video_player`:
+
+- **Picture-in-Picture (PiP) Support**: Enable floating video playback on iOS 15+ allowing users to watch videos while using other apps.
 
 ## Usage
 
@@ -146,17 +152,8 @@ It's important to properly dispose of both the controller and any event subscrip
 
 ### Advanced usage
 
-See the [example app](https://github.com/albemala/native_video_player/tree/main/example) for a complete usage example.
+See the [example app](https://github.com/lucas-goldner/golden_video_player/tree/main/example) for a complete usage example.
 
-## Support this project
-
-- [GitHub Sponsor](https://github.com/sponsors/albemala)
-- [Buy Me A Coffee](https://www.buymeacoffee.com/albemala)
-
-Sponsors:
-
-- [@enteio](https://github.com/enteio)
-- [@bsutton](https://github.com/bsutton)
 
 Thank you to all sponsors for supporting this project! ❤️
 
@@ -166,4 +163,6 @@ Thank you to all sponsors for supporting this project! ❤️
 
 ## Credits
 
-Created by [@albemala](https://github.com/albemala) ([Twitter](https://twitter.com/albemala))
+Originally created by [@albemala](https://github.com/albemala) ([Twitter](https://twitter.com/albemala))
+
+Updated with new features by [@lucas-goldner](https://github.com/lucas-goldner) ([Twitter](https://twitter.com/LucasGoldner))

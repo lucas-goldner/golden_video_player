@@ -131,7 +131,6 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
         context: UnsafeMutableRawPointer?
     ) {
         if keyPath == "status" {
-            // print("AVPlayer status changed to: \(player.status)")
             switch (player.status) {
             case .unknown:
                 break
@@ -175,7 +174,6 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     
     @objc
     private func onPlayerItemNotification(notification: NSNotification) {
-        // print("AVPlayerItem notification: \(notification.name)")
         switch notification.name {
         case AVPlayerItem.didPlayToEndTimeNotification:
             flutterApi.onPlaybackEvent(event: PlaybackEndedEvent()) { _ in }
@@ -220,12 +218,10 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
 
     func enterPictureInPicture() throws {
         guard AVPictureInPictureController.isPictureInPictureSupported() else {
-            print("PiP not supported")
             return
         }
 
         guard let layer = playerLayer else {
-            print("No player layer available")
             return
         }
 
@@ -241,7 +237,6 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
         }
 
         guard let pipController = pictureInPictureController else {
-            print("Failed to create PiP controller")
             return
         }
 
