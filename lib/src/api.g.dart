@@ -326,7 +326,7 @@ class NativeVideoPlayerHostApi {
 
   Future<void> loadVideo(VideoSource source) async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.loadVideo$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.loadVideo$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -350,7 +350,7 @@ class NativeVideoPlayerHostApi {
 
   Future<VideoInfo> getVideoInfo() async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.getVideoInfo$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.getVideoInfo$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -379,7 +379,7 @@ class NativeVideoPlayerHostApi {
 
   Future<void> play(double speed) async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.play$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.play$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -403,7 +403,7 @@ class NativeVideoPlayerHostApi {
 
   Future<void> pause() async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.pause$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.pause$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -427,7 +427,7 @@ class NativeVideoPlayerHostApi {
 
   Future<void> stop() async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.stop$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.stop$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -451,7 +451,7 @@ class NativeVideoPlayerHostApi {
 
   Future<bool> isPlaying() async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.isPlaying$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.isPlaying$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -480,7 +480,7 @@ class NativeVideoPlayerHostApi {
 
   Future<void> seekTo(int position) async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.seekTo$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.seekTo$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -504,7 +504,7 @@ class NativeVideoPlayerHostApi {
 
   Future<int> getPlaybackPosition() async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.getPlaybackPosition$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.getPlaybackPosition$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -533,7 +533,7 @@ class NativeVideoPlayerHostApi {
 
   Future<void> setVolume(double volume) async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.setVolume$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.setVolume$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -557,7 +557,7 @@ class NativeVideoPlayerHostApi {
 
   Future<void> setPlaybackSpeed(double speed) async {
     final String pigeonVar_channelName =
-        'dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.setPlaybackSpeed$pigeonVar_messageChannelSuffix';
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.setPlaybackSpeed$pigeonVar_messageChannelSuffix';
     final BasicMessageChannel<Object?> pigeonVar_channel =
         BasicMessageChannel<Object?>(
       pigeonVar_channelName,
@@ -566,6 +566,54 @@ class NativeVideoPlayerHostApi {
     );
     final List<Object?>? pigeonVar_replyList =
         await pigeonVar_channel.send(<Object?>[speed]) as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> enterPictureInPicture() async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.enterPictureInPicture$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_channel.send(null) as List<Object?>?;
+    if (pigeonVar_replyList == null) {
+      throw _createConnectionError(pigeonVar_channelName);
+    } else if (pigeonVar_replyList.length > 1) {
+      throw PlatformException(
+        code: pigeonVar_replyList[0]! as String,
+        message: pigeonVar_replyList[1] as String?,
+        details: pigeonVar_replyList[2],
+      );
+    } else {
+      return;
+    }
+  }
+
+  Future<void> exitPictureInPicture() async {
+    final String pigeonVar_channelName =
+        'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.exitPictureInPicture$pigeonVar_messageChannelSuffix';
+    final BasicMessageChannel<Object?> pigeonVar_channel =
+        BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final List<Object?>? pigeonVar_replyList =
+        await pigeonVar_channel.send(null) as List<Object?>?;
     if (pigeonVar_replyList == null) {
       throw _createConnectionError(pigeonVar_channelName);
     } else if (pigeonVar_replyList.length > 1) {
@@ -596,7 +644,7 @@ abstract class NativeVideoPlayerFlutterApi {
       final BasicMessageChannel<
           Object?> pigeonVar_channel = BasicMessageChannel<
               Object?>(
-          'dev.flutter.pigeon.native_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent$messageChannelSuffix',
+          'dev.flutter.pigeon.golden_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent$messageChannelSuffix',
           pigeonChannelCodec,
           binaryMessenger: binaryMessenger);
       if (api == null) {
@@ -604,11 +652,11 @@ abstract class NativeVideoPlayerFlutterApi {
       } else {
         pigeonVar_channel.setMessageHandler((Object? message) async {
           assert(message != null,
-              'Argument for dev.flutter.pigeon.native_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent was null.');
+              'Argument for dev.flutter.pigeon.golden_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent was null.');
           final List<Object?> args = (message as List<Object?>?)!;
           final PlaybackEvent? arg_event = (args[0] as PlaybackEvent?);
           assert(arg_event != null,
-              'Argument for dev.flutter.pigeon.native_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent was null, expected non-null PlaybackEvent.');
+              'Argument for dev.flutter.pigeon.golden_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent was null, expected non-null PlaybackEvent.');
           try {
             api.onPlaybackEvent(arg_event!);
             return wrapResponse(empty: true);

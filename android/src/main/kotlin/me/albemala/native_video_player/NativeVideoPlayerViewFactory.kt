@@ -20,10 +20,16 @@ class NativeVideoPlayerViewFactory(
         viewId: Int,
         args: Any?
     ): PlatformView {
+        // Parse creation arguments to get showNativeControls flag
+        @Suppress("UNCHECKED_CAST")
+        val showNativeControls = (args as? Map<String, Any>)
+            ?.get("showNativeControls") as? Boolean ?: false
+
         return NativeVideoPlayerViewController(
             messenger,
             viewId,
-            context
+            context,
+            showNativeControls
         )
     }
 }

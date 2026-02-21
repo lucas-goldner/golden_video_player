@@ -203,4 +203,12 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
                 object: player.currentItem)
         }
     }
+
+    func enterPictureInPicture() throws {
+        // PiP is not supported on macOS
+    }
+
+    func exitPictureInPicture() throws {
+        // PiP is not supported on macOS
+    }
 }

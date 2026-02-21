@@ -383,6 +383,8 @@ protocol NativeVideoPlayerHostApi {
   func getPlaybackPosition() throws -> Int64
   func setVolume(volume: Double) throws
   func setPlaybackSpeed(speed: Double) throws
+  func enterPictureInPicture() throws
+  func exitPictureInPicture() throws
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -391,7 +393,7 @@ class NativeVideoPlayerHostApiSetup {
   /// Sets up an instance of `NativeVideoPlayerHostApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: NativeVideoPlayerHostApi?, messageChannelSuffix: String = "") {
     let channelSuffix = messageChannelSuffix.count > 0 ? ".\(messageChannelSuffix)" : ""
-    let loadVideoChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.loadVideo\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let loadVideoChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.loadVideo\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       loadVideoChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -406,7 +408,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       loadVideoChannel.setMessageHandler(nil)
     }
-    let getVideoInfoChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.getVideoInfo\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getVideoInfoChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.getVideoInfo\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getVideoInfoChannel.setMessageHandler { _, reply in
         do {
@@ -419,7 +421,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       getVideoInfoChannel.setMessageHandler(nil)
     }
-    let playChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.play\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let playChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.play\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       playChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -434,7 +436,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       playChannel.setMessageHandler(nil)
     }
-    let pauseChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.pause\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let pauseChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.pause\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       pauseChannel.setMessageHandler { _, reply in
         do {
@@ -447,7 +449,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       pauseChannel.setMessageHandler(nil)
     }
-    let stopChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.stop\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let stopChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.stop\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       stopChannel.setMessageHandler { _, reply in
         do {
@@ -460,7 +462,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       stopChannel.setMessageHandler(nil)
     }
-    let isPlayingChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.isPlaying\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let isPlayingChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.isPlaying\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       isPlayingChannel.setMessageHandler { _, reply in
         do {
@@ -473,7 +475,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       isPlayingChannel.setMessageHandler(nil)
     }
-    let seekToChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.seekTo\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let seekToChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.seekTo\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       seekToChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -488,7 +490,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       seekToChannel.setMessageHandler(nil)
     }
-    let getPlaybackPositionChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.getPlaybackPosition\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getPlaybackPositionChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.getPlaybackPosition\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getPlaybackPositionChannel.setMessageHandler { _, reply in
         do {
@@ -501,7 +503,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       getPlaybackPositionChannel.setMessageHandler(nil)
     }
-    let setVolumeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.setVolume\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setVolumeChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.setVolume\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setVolumeChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -516,7 +518,7 @@ class NativeVideoPlayerHostApiSetup {
     } else {
       setVolumeChannel.setMessageHandler(nil)
     }
-    let setPlaybackSpeedChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.native_video_player.NativeVideoPlayerHostApi.setPlaybackSpeed\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setPlaybackSpeedChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.setPlaybackSpeed\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setPlaybackSpeedChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -530,6 +532,32 @@ class NativeVideoPlayerHostApiSetup {
       }
     } else {
       setPlaybackSpeedChannel.setMessageHandler(nil)
+    }
+    let enterPictureInPictureChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.enterPictureInPicture\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      enterPictureInPictureChannel.setMessageHandler { _, reply in
+        do {
+          try api.enterPictureInPicture()
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      enterPictureInPictureChannel.setMessageHandler(nil)
+    }
+    let exitPictureInPictureChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerHostApi.exitPictureInPicture\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      exitPictureInPictureChannel.setMessageHandler { _, reply in
+        do {
+          try api.exitPictureInPicture()
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      exitPictureInPictureChannel.setMessageHandler(nil)
     }
   }
 }
@@ -548,7 +576,7 @@ class NativeVideoPlayerFlutterApi: NativeVideoPlayerFlutterApiProtocol {
     return ApiPigeonCodec.shared
   }
   func onPlaybackEvent(event eventArg: PlaybackEvent, completion: @escaping (Result<Void, PigeonError>) -> Void) {
-    let channelName: String = "dev.flutter.pigeon.native_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent\(messageChannelSuffix)"
+    let channelName: String = "dev.flutter.pigeon.golden_video_player.NativeVideoPlayerFlutterApi.onPlaybackEvent\(messageChannelSuffix)"
     let channel = FlutterBasicMessageChannel(name: channelName, binaryMessenger: binaryMessenger, codec: codec)
     channel.sendMessage([eventArg] as [Any?]) { response in
       guard let listResponse = response as? [Any?] else {

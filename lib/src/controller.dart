@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:native_video_player/src/api.g.dart';
-import 'package:native_video_player/src/utils/file.dart';
+import 'package:golden_video_player/src/api.g.dart';
+import 'package:golden_video_player/src/utils/file.dart';
 
 class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
   late final NativeVideoPlayerHostApi _hostApi;
@@ -221,6 +221,24 @@ class NativeVideoPlayerController implements NativeVideoPlayerFlutterApi {
   Future<void> setVolume(double volume) async {
     await _hostApi.setVolume(volume);
     onPlaybackEvent(VolumeChangedEvent(volume: volume));
+  }
+
+  /// Enters Picture in Picture mode.
+  Future<void> enterPictureInPicture() async {
+    try {
+      await _hostApi.enterPictureInPicture();
+    } catch (e) {
+      print('Error entering PiP: $e');
+    }
+  }
+
+  /// Exits Picture in Picture mode.
+  Future<void> exitPictureInPicture() async {
+    try {
+      await _hostApi.exitPictureInPicture();
+    } catch (e) {
+      print('Error exiting PiP: $e');
+    }
   }
 }
 

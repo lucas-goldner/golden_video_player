@@ -21,6 +21,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.ui.PlayerView
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.platform.PlatformView
 
@@ -28,11 +29,12 @@ class NativeVideoPlayerViewController(
     private val messenger: BinaryMessenger,
     viewId: Int,
     context: Context?,
+    private val showNativeControls: Boolean = false,
 ) : PlatformView, NativeVideoPlayerHostApi, Player.Listener {
 
     private val player: ExoPlayer = ExoPlayer.Builder(context!!).build()
-    private val view: SurfaceView = SurfaceView(context)
     private val relativeLayout: RelativeLayout = RelativeLayout(context)
+    private var videoView: View? = null
 
     private val flutterApi = NativeVideoPlayerFlutterApi(
         messenger,
@@ -54,6 +56,20 @@ class NativeVideoPlayerViewController(
     }
 
     private fun initViews() {
+        if (showNativeControls) {
+            initPlayerView()
+        } else {
+            initSurfaceView()
+        }
+
+        relativeLayout.layoutParams = RelativeLayout.LayoutParams(
+            RelativeLayout.LayoutParams.MATCH_PARENT,
+            RelativeLayout.LayoutParams.MATCH_PARENT
+        )
+    }
+
+    private fun initSurfaceView() {
+        val view = SurfaceView(relativeLayout.context)
         view.setBackgroundColor(0)
 
         val layoutParams = RelativeLayout.LayoutParams(
@@ -67,11 +83,26 @@ class NativeVideoPlayerViewController(
         view.layoutParams = layoutParams
         player.setVideoSurfaceView(view)
 
-        relativeLayout.layoutParams = RelativeLayout.LayoutParams(
+        relativeLayout.addView(view)
+        videoView = view
+    }
+
+    private fun initPlayerView() {
+        val playerView = PlayerView(relativeLayout.context)
+        playerView.player = player
+
+        val layoutParams = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT,
             RelativeLayout.LayoutParams.MATCH_PARENT
         )
-        relativeLayout.addView(view)
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        playerView.layoutParams = layoutParams
+
+        relativeLayout.addView(playerView)
+        videoView = playerView
     }
 
     override fun dispose() {
@@ -80,7 +111,9 @@ class NativeVideoPlayerViewController(
         if (player.mediaItemCount > 0) {
             player.removeMediaItem(0)
         }
-        player.setVideoSurfaceView(null)
+        if (!showNativeControls) {
+            player.setVideoSurfaceView(null)
+        }
         player.removeListener(this)
         player.release()
     }
@@ -163,5 +196,13 @@ class NativeVideoPlayerViewController(
 
     override fun setVolume(volume: Double) {
         player.volume = volume.toFloat()
+    }
+
+    override fun enterPictureInPicture() {
+        // PiP is handled at the view level via PlayerView
+    }
+
+    override fun exitPictureInPicture() {
+        // PiP is handled at the view level via PlayerView
     }
 }

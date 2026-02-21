@@ -1,15 +1,21 @@
 import Flutter
 import AVFoundation
+import AVKit
 
 class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     let player: AVPlayer
     private let flutterApi: NativeVideoPlayerFlutterApi
-    
-    init(messenger: FlutterBinaryMessenger, viewId: Int64) {
+    private weak var playerViewController: AVPlayerViewController?
+    private weak var playerLayer: AVPlayerLayer?
+    private var pictureInPictureController: AVPictureInPictureController?
+
+    init(messenger: FlutterBinaryMessenger, viewId: Int64, playerViewController: AVPlayerViewController? = nil, playerLayer: AVPlayerLayer? = nil) {
         self.player = AVPlayer(playerItem: nil)
         self.flutterApi = NativeVideoPlayerFlutterApi(
             binaryMessenger: messenger,
             messageChannelSuffix: String(viewId))
+        self.playerViewController = playerViewController
+        self.playerLayer = playerLayer
         super.init()
         
         player.addObserver(self, forKeyPath: "status", context: nil)
@@ -36,7 +42,7 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
     
     func loadVideo(source: VideoSource) throws {
         let isUrl = source.type == .network
-        
+
         guard let uri = isUrl
             ? URL(string: source.path)
             : URL(fileURLWithPath: source.path)
@@ -44,14 +50,9 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
             return
         }
 
-        let videoAsset = isUrl 
-            ? AVURLAsset(url: uri, options: ["AVURLAssetHTTPHeaderFieldsKey": source.headers]) 
+        let videoAsset = isUrl
+            ? AVURLAsset(url: uri, options: ["AVURLAssetHTTPHeaderFieldsKey": source.headers])
             : AVAsset(url: uri)
-        
-        if !videoAsset.isPlayable {
-            flutterApi.onPlaybackEvent(event: PlaybackErrorEvent(errorMessage: "Video is not playable")) { _ in }
-            return
-        }
 
         // loadVideo can be called multiple times,
         // so we need to remove the previous observers
@@ -215,5 +216,64 @@ class NativeVideoPlayerController: NSObject, NativeVideoPlayerHostApi {
                 name: notification,
                 object: player.currentItem)
         }
+    }
+
+    func enterPictureInPicture() throws {
+        guard AVPictureInPictureController.isPictureInPictureSupported() else {
+            print("PiP not supported")
+            return
+        }
+
+        guard let layer = playerLayer else {
+            print("No player layer available")
+            return
+        }
+
+        // Ensure video is playing
+        if player.rate == 0 {
+            player.play()
+        }
+
+        // Create PiP controller if not already created
+        if pictureInPictureController == nil {
+            pictureInPictureController = AVPictureInPictureController(playerLayer: layer)
+            pictureInPictureController?.delegate = self
+        }
+
+        guard let pipController = pictureInPictureController else {
+            print("Failed to create PiP controller")
+            return
+        }
+
+        try pipController.startPictureInPicture()
+    }
+
+    func exitPictureInPicture() throws {
+        guard let pipController = pictureInPictureController, pipController.isPictureInPictureActive else {
+            return
+        }
+        try pipController.stopPictureInPicture()
+    }
+}
+
+extension NativeVideoPlayerController: AVPictureInPictureControllerDelegate {
+    func pictureInPictureControllerWillStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        // Handle PiP start
+    }
+
+    func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        // Handle PiP started
+    }
+
+    func pictureInPictureControllerWillStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        // Handle PiP will stop
+    }
+
+    func pictureInPictureControllerDidStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        // Handle PiP stopped
+    }
+
+    func pictureInPictureController(_ pictureInPictureController: AVPictureInPictureController, restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void) {
+        completionHandler(true)
     }
 }

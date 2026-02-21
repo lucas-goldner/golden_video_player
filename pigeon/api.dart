@@ -73,6 +73,10 @@ abstract class NativeVideoPlayerHostApi {
   void setVolume(double volume);
 
   void setPlaybackSpeed(double speed);
+
+  void enterPictureInPicture();
+
+  void exitPictureInPicture();
 }
 
 sealed class PlaybackEvent {
